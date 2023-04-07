@@ -1,3 +1,5 @@
 function solution(numbers) {
-    return numbers.reduce((acc, cur) => acc + cur, 0) / numbers.length
+     const sumAv = numbers.reduce((acc, cur) => acc + cur, 0) / numbers.length;
+    
+    return sumAv.toFixed(1)
 }

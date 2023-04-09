@@ -8,4 +8,6 @@ function solution(my_string, n) {
         })
     })
     return answer;
+    
+    // return [...my_string].reduce((acc, cur) => acc + cur.repeat(n), '')
 }

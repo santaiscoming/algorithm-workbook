@@ -6,7 +6,7 @@ const discountMap = new Map([
 
 function solution(price) {
   for (let [priceRef, discountRate] of discountMap) {
-      if(price >= priceRef) return Math.floor(price - (price / 100) * discountRate)
+    if (price >= priceRef) return Math.floor(price - (price / 100) * discountRate);
   }
-    return Math.floor(price)
+  return Math.floor(price);
 }

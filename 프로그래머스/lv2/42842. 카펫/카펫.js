@@ -14,6 +14,7 @@ function solution(brown, yellow) {
             if(j * i === carpetSize) carpetCases.push([i, j]) ;
        }
     };
+    console.log(carpetCases)
     
     // 3. (2)에서 만든 모든 경우의 수에서 yellow(인수로 받음) 카펫의 개수와 같은 배열을 찾자
     const result = [];

@@ -11,4 +11,9 @@ function solution(s) {
         if(frequencyMap.get(str) === 1) result.push(str)
     })
     return result.sort().join('')
+    
+    // 앞에서 탐색한 indexOf와 뒤에서 탐색한 lastIndexOf의 값이 같다면 중복 X
+    //    let res = [];
+    // for (let c of s) if (s.indexOf(c) === s.lastIndexOf(c)) res.push(c);
+    // return res.sort().join('');
 }

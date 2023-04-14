@@ -12,17 +12,17 @@ function solution(word) {
     const dfs = (strSum) => {
         // 탈출조건
         if(strSum.length  === vowels.length + 1) return;
-        
+
         // 수행동작
         vowelsMap[strSum] = idx++;
-        
+
         vowels.forEach((vowel) => {
             dfs(strSum + vowel)
         })
     }
-    
+
     dfs("")
 
-    
+
     return vowelsMap[word] - 1
 }

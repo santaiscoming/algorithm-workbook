@@ -1,31 +1,14 @@
-// const sumArr = (arr) => {
-//     return arr.reduce((acc, cur) => acc + cur, 0)
-// }
-
+// 수열의 등차가 1인것을 이용 + 중간값
 // function solution(num, total) {
-//     // num의 범위가 100까지니까
-//     const numArr = Array.from({length : 100}, (_, idx) => idx + 1)
-//     let idx = 0;
-//     let negative = -1;
-//     const sliceArr = numArr.slice(idx, idx + num)
-    
-//     while(true) {
-//         if(sumArr(sliceArr) === total) return sliceArr
-//         if(sumArr(sliceArr) < total) {
-//             idx += 1;
-//             continue
-//         } else {
-//             sliceArr.pop()
-//             sliceArr.shift(sliceArr[0] - 1)
-//             negative -= 1;
-//             continue;
-//         }  
-//     }
+//     var min = Math.ceil(total/num - Math.floor(num/2));
+//     var max = Math.floor(total/num + Math.floor(num/2));
+
+//     return new Array(max-min+1).fill(0).map((el,i)=>{return i+min;});
 // }
 
 function solution(num, total) {
   let answer = Array.from({ length: num }, () => 0);
-  //
+  // 처음에는 범위를 -total 만큼만 했는데 error -> 범위문제?
   for (let i = -(total + num); i <= total + num; i++) {
     let sum = 0;
     let index = 0;

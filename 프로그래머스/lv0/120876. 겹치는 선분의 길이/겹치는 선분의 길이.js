@@ -1,4 +1,11 @@
 function solution(lines) {
+    
+    // 맵도 사용 가능하다 ! remind
+    
+    
+    
+    
+    
   let result = 0;
   // 범위가 -100 < < 100
   const lineDots = Array.from({ length: 200 }, () => 0);

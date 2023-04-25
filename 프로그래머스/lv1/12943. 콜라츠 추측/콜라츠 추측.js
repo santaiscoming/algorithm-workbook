@@ -4,17 +4,15 @@ const isEven = (num) => {
 
 function solution(num) {
     let count = 0;
-    let number = num
     
     while(count <= 500) {
-        if(number === 1) return count
+        if(num === 1) return count
         count += 1;
-        if(isEven(number)) {
-            number /= 2;
+        if(isEven(num)) {
+            num /= 2;
             continue;
-        }
-        if(!isEven(number)) number = (number * 3) + 1;
-        
+        } 
+        num = (num * 3) + 1;
     }
     
     return -1;

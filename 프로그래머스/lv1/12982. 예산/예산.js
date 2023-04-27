@@ -7,6 +7,5 @@ function solution(d, budget) {
         budget -= money;
         count += 1;
     }
-    console.log(budget)
     return count
 }

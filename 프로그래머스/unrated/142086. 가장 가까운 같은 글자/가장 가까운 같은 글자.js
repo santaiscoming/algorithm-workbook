@@ -9,7 +9,7 @@ function solution(s) {
     const strMap = {};
     const result = [];
     
-    [...s].reduce((map, char, idx) => {
+    const map = [...s].reduce((map, char, idx) => {
         if(!map[char]) {
             map[char] = { idx }
             result.push(-1)
@@ -21,4 +21,10 @@ function solution(s) {
     }, {})
 
     return result
+    
+    
+  //   [...s].map((char, i) => {
+  //   const count = s.slice(0, i).lastIndexOf(char);
+  //   return count < 0 ? count : i - count;
+  // })
 }

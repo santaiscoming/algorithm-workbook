@@ -1,17 +1,12 @@
 function solution(n) {
-  const primes = [2];
-  
-  for (let i = 3; i <= n; i++) {
-    let isPrime = true;
-    const sqrtI = Math.sqrt(i);
-    for (let j = 0; primes[j] <= sqrtI; j++) {
-      if (i % primes[j] === 0) {
-        isPrime = false;
-        break;
-      }
+    let count = 0;
+    
+    if (n === 1) return 0;
+    
+    for (let i = 2; i < n; i++) {
+      if (n % i === 0) continue;
+        count += 1;
     }
-    if (isPrime) primes.push(i);
-  }
-  
-  return primes.length;
+
+    return count
 }

@@ -10,6 +10,7 @@ function solution(lottos, win_nums) {
     const correctNumberCount = lottos.filter((lotto) => win_nums.includes(lotto)).length
     const zeroCount = lottos.filter((lotto) => !lotto).length
     const winCount = correctNumberCount + zeroCount
+    
     if(winCount === 0) return [lottoMap['1'], lottoMap['1']]
     if(correctNumberCount === 0) return [lottoMap[winCount], lottoMap['1']]
     return [lottoMap[winCount], lottoMap[correctNumberCount]];

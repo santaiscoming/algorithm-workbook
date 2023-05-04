@@ -4,7 +4,7 @@ function solution(n, m, section) {
     let complete = 0;
 
     section.forEach((wall) => {
-        if(complete > n) return answer
+        if (complete > n) return answer
         if (wall > complete) {
            complete = wall + m - 1;
            answer += 1;

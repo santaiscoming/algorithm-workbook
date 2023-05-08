@@ -9,7 +9,7 @@ function solution(board, moves) {
             if(board[j][i]) newMap[i].push(board[j][i])
         }
     }
-    
+    console.log(newMap)
     moves.forEach((move, idx) => {
         let resultLast = result[result.length - 1]
         let curKakao = newMap[move - 1].shift()

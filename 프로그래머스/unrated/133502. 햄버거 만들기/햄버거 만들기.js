@@ -10,7 +10,7 @@ function solution(ingredient) {
         if (bugger[bugger.length - 4] === 1 && bugger[bugger.length - 3] === 2 && bugger[bugger.length - 2] === 3 && bugger[bugger.length - 1] === 1) {
             Array.from({length: 4}, () => bugger.pop())
 
-            answer++;
+            answer += 1;
             }
         }
     }

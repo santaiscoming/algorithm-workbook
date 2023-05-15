@@ -10,10 +10,10 @@ function solution(players, callings) {
         let nextPlayer = players[findRank - 2]
         players[findRank - 2] = passPlayer
         players[findRank - 1] = nextPlayer
+        
         playerMap[passPlayer] -= 1;
         playerMap[nextPlayer] += 1;
     })
-    
     // callings.forEach((passPlayer, idx) => {
     //     let findRank;
     //     findRank = playerMap[passPlayer]

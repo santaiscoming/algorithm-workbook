@@ -3,10 +3,10 @@ const removeZero = (num) => {
         let strArr = [...String(num)].map((char) => Number(char))
         let zeroCount = 0;
         let result = ''
-        for(let i = 0; i < strArr.length; i++) {
-            if(!strArr[i]) zeroCount++;
-            if(strArr[i]) result += strArr[i]
-        }
+        strArr.forEach(char => {
+            if(!char) zeroCount++;
+            if(char) result += char
+        })
         return [zeroCount, result]
     }
 

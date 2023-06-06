@@ -21,6 +21,8 @@
 //     }
 
 //     compareNum++;
+
+
 //   }
 // }
 
@@ -38,7 +40,7 @@ function solution(n) {
         
      
         if(sameOneCount === compareNumCount) return compareNum
-        
            compareNum++;
+        
     }
 }

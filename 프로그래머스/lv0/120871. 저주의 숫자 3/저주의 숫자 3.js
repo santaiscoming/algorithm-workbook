@@ -1,7 +1,20 @@
 function solution(n) {
-    const arr = Array.from({length : n * 3}, (_, idx) => idx + 1);
+    // n까지 증가시키면서 list.push(num)
+        // if : currnetNum % 3 === 0 && String(currentNum).include(3) -> currentNum++, continue
+    let count = n
+    const villageNumList = [];
+    let currentNum = 1
+    while(true) {
+        if(villageNumList.length === n) break;
+        if(currentNum % 3 === 0 || String(currentNum).includes(3)) {
+            currentNum++
+            continue
+        }
+        
+        villageNumList.push(currentNum)
+        currentNum++;
+        count--;
+    }
     
-    const strangeLanguage = arr.filter((num) => num % 3 !== 0 && !String(num).includes('3'))
-    
-    return strangeLanguage[n - 1]
+    return villageNumList.pop()
 }

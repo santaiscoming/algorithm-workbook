@@ -14,8 +14,8 @@ function solution(s) {
             if (sliceStr === nextSliceStr) {
                 count++;
             } else {
-                if (count != 1) accStr = accStr + String(count) + sliceStr;
-                else accStr = accStr + sliceStr;
+                if (count !== 1) accStr += String(count) + sliceStr;
+                if (count === 1) accStr += sliceStr;
                 
                 sliceStr = nextSliceStr;
                 count = 1;

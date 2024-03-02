@@ -34,7 +34,7 @@ def divide_search(nums, check_num):
         if nums[center] == check_num:
             return 1
         # not found
-        if start > last:
+        if start > last or start == last:
             return 0
         # key < center
         if nums[center] < check_num:

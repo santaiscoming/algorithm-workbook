@@ -1,53 +1,55 @@
 import sys
 
-# sys.stdin = open("./input.txt", "r")
+sys.setrecursionlimit(10**8)
+# sys.stdin = open("./input.txt", "r")  # 제거
+input = sys.stdin.readline
+
+N = int(input())
+nums_1 = [int(num) for num in input().split()]
+M = int(input())
+nums_2 = [int(num) for num in input().split()]
 
 
-def readlines(count=1):
-    return [input() for _ in range(count)]
-
-
-N, nums, M, check_nums = readlines(4)
-nums = list(map(int, nums.split()))
-nums.sort()
-check_nums = list(map(int, check_nums.split()))
-
-
-# 종료조건 :
-# 1. 키가 일치하는 경우
-# 2. 검색범위가 더이상 없는경우
-
-# key > center : {center + 1} ~ {last}
-# start = {center + 1}
-# key < center : {start} ~ {center - 1}
-# last = {center - 1}
-
-
-def divide_search(nums, check_num):
-    start = 0
-    last = len(nums) - 1
+def binary_search(arr, find_val):
+    # center값이 find_val보다 큰지 작은지 확인
+    left = 0
+    right = N - 1
+    center = None
 
     while True:
-        center = (start + last) // 2
+        center = (right + left) // 2
 
-        # find key
-        if nums[center] == check_num:
-            return 1
-        # not found
-        if start > last or start == last:
-            return 0
-        # key < center
-        if nums[center] < check_num:
-            start = center + 1
-            continue
-        # key > center
-        if nums[center] > check_num:
-            last = center - 1
-            continue
+        if arr[center] == find_val:
+            print(1)
+            break
 
+        if arr[center] < find_val:
+            left = center + 1
+        elif arr[center] > find_val:
+            right = center - 1
 
-def solution(N, nums, M, check_nums):
-    [print((divide_search(nums, check_num))) for check_num in check_nums]
+        # 종료조건:
+        if left > right:
+            print(0)
+            break
 
 
-solution(N, nums, M, check_nums)
+def solve(arr, arr2):
+    arr.sort()
+
+    for num in arr2:
+        binary_search(arr, num)
+
+        # 입력
+
+
+solve(nums_1, nums_2)
+
+# set 자료구조에 in을 활용할수도 있다.
+# N = int(input())
+# set_nums = set(map(int, input().split()))
+# M = int(input())
+# numbers = list(map(int, input().split()))
+
+# for num in numbers:
+#     print(1) if num in set_nums else print(0)

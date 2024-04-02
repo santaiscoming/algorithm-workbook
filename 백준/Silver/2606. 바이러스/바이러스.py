@@ -1,52 +1,42 @@
 import sys
+from collections import deque
 
-# sys.stdin = open("./input.txt", "r")
+sys.setrecursionlimit(10**8)
+# sys.stdin = open("./input.txt", "r")  # 제거
+input = sys.stdin.readline
 
-
-def readlines(count=1):
-    # result = []
-
-    # while True:
-    #     try:
-    #         response = input()
-    #         print(response)
-    #         result.append(response)
-    #     except EOFError:
-    #         break
-
-    # return result
-    return [input() for _ in range(count)]
+com_cnt = int(input())
+com_edge_cnt = int(input())
+com_connect = [list(map(int, input().split())) for _ in range(com_edge_cnt)]
+graph = [[] for _ in range(com_cnt + 1)]
 
 
-computer_count = int(input())
-network_count = int(input())
-networks = [list(map(int, input().split())) for _ in range(network_count)]
+for v1, v2 in com_connect:
+    graph[v1].append(v2)
+    graph[v2].append(v1)
+
+    
+def bfs(graph, start, visited):
+    q = deque()
+    q.append(start)
+    visited[start] = True
+
+    while q:
+        cur_v = q.popleft()
+        visited[cur_v] = True
+
+        for adj_v in graph[cur_v]:
+            if visited[adj_v]:
+                continue
+            q.append(adj_v)
 
 
-def solution(computer_count, network_count, networks):
-    visited = {i: False for i in range(computer_count + 1)}
-    graph = {i: [] for i in range(computer_count + 1)}
-    result = 0
+def solution(graph):
+    infection = [False] * (com_cnt + 1)
 
-    for network in networks:
-        a, b = network
-        graph[a].append(b)
-        graph[b].append(a)
+    bfs(graph, 1, infection)
 
-    def dfs(graph, start, visited):
-        visited[start] = True
-
-        for computer_id in graph[start]:
-            if not visited[computer_id]:
-                dfs(graph, computer_id, visited)
-
-    dfs(graph, 1, visited)
-
-    for computer_id in range(2, computer_count + 1):
-        if visited[computer_id]:
-            result += 1
-
-    return result
+    print(len(list(filter(lambda x: x == True, infection))) - 1)
 
 
-print(solution(computer_count, network_count, networks))
+solution(graph)

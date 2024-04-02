@@ -1,4 +1,5 @@
 import sys
+from collections import deque
 
 sys.setrecursionlimit(10**8)
 # sys.stdin = open("./input.txt", "r")  # 제거
@@ -21,6 +22,21 @@ def dfs(graph, start, visited):
         dfs(graph, adj, visited)
 
 
+def bfs(graph, start, visited):
+    q = deque()
+    q.append(start)
+
+    while q:
+        cur_v = q.popleft()
+        visited[cur_v] = True
+
+        for adj_v in graph[cur_v]:
+            if visited[adj_v]:
+                continue
+
+            bfs(graph, adj_v, visited)
+
+
 def solution(edges):
     # 모든 정점을 돌면서 bfs를 돌린다
     # bfs 한바퀴를 돌면 다른 요소에 대해 돌아도 돌지 않을것이다.
@@ -32,10 +48,10 @@ def solution(edges):
         graph[v1].append(v2)
         graph[v2].append(v1)
 
-    for i in range(1, N + 1):
-        if visited[i]:
+    for v in range(1, N + 1):
+        if visited[v]:
             continue
-        dfs(graph, i, visited)
+        bfs(graph, v, visited)
         result += 1
 
     return result

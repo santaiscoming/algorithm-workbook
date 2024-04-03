@@ -1,49 +1,43 @@
 import sys
+from collections import deque
 
-# sys.stdin = open("./input.txt", "r")
-sys.setrecursionlimit(10**6)
-
-def readlines(count=1):
-    # result = []
-
-    # while True:
-    #     try:
-    #         response = input()
-    #         print(response)
-    #         result.append(response)
-    #     except EOFError:
-    #         break
-
-    # return result
-    return [input() for _ in range(count)]
-
+sys.setrecursionlimit(10**8)
+# sys.stdin = open("./input.txt", "r")  # 제거
+input = sys.stdin.readline
 
 N = int(input())
-# vertexes = [list(map(int, vertex.split())) for vertex in readlines(N - 1)]
-vertexes = [list(map(int, input().split())) for _ in range(N - 1)]
+edge_info = [list(map(int, input().split())) for _ in range(N - 1)]
 
 
-def solution(N, vertexes):
-    visited = {i: False for i in range(1, N + 1)}
-    graph = {i: [] for i in range(1, N + 1)}
-    result = {i: 0 for i in range(1, N + 1)}
+def dfs(graph, start, visited, result):
+    if visited[start]:
+        return
 
-    for vertex in vertexes:
-        a, b = vertex
-        graph[a].append(b)
-        graph[b].append(a)
+    visited[start] = True
 
-    def dfs(graph, start, visited, result):
-        visited[start] = True
+    for adj_v in graph[start]:
+        if visited[adj_v]:
+            continue
+        result[adj_v] = start
+        dfs(graph, adj_v, visited, result)
 
-        for vertex in graph[start]:
-            if not visited[vertex]:
-                result[vertex] = start
-                dfs(graph, vertex, visited, result)
+
+def solution(edge_info, N):
+    graph = [[] for _ in range(N + 1)]
+    visited = [False] * (N + 1)
+    result = [0] * (N + 1)
+
+    for v1, v2 in edge_info:
+        graph[v1].append(v2)
+        graph[v2].append(v1)
 
     dfs(graph, 1, visited, result)
 
-    return result
+    for i, parent in enumerate(result):
+        if i == 0 or i == 1:
+            continue
+
+        print(parent)
 
 
-[print(result) for result in solution(N, vertexes).values() if result != 0]
+solution(edge_info, N)

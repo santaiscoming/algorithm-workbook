@@ -15,7 +15,7 @@ def solution(items):
     for y in range(1, N + 1):
         cur_w, cur_v = items[y - 1]
 
-        for bag_w in range(K + 1):
+        for bag_w in range(1, K + 1):
             prev_item_table_acc = table[y - 1][bag_w]
 
             if bag_w >= cur_w:

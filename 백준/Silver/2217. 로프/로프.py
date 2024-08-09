@@ -1,28 +1,25 @@
 import sys
+from functools import reduce
+
+sys.setrecursionlimit(10**8)
+# sys.stdin = open("./input.txt", "r")
 input = sys.stdin.readline
 
-# sys.stdin = open("./input.txt", "r")
-
-
-def readlines(count):
-    # return list(map(lambda x: input(), range(count)))
-    return [input() for _ in range(count)]
-
-
 N = int(input())
-ropes = list(map(int, readlines(N)))
+weights = [int(input()) for _ in range(N)]
+
+# 작은수로 정렬한다
 
 
-def solution(N, ropes):
-    result = []
-    ascendingRopes = sorted(ropes, reverse=True)
+def solution(N, weights):
+    max_weight = 0
+    copied_weights = sorted(weights)
 
     for i in range(N):
-        ropeCount = i + 1
-        weight = ascendingRopes[i] * ropeCount
-        result.append(weight)
+        cur_acc = copied_weights[i] * (N - i)
+        max_weight = max(max_weight, cur_acc)
 
-    return max(result)
+    return max_weight
 
 
-print(solution(N, ropes))
+print(solution(N, weights))

@@ -1,4 +1,5 @@
 import sys
+from functools import reduce
 from collections import Counter
 
 # sys.stdin = open("input.txt", "r")
@@ -9,15 +10,14 @@ words = [input().rstrip() for _ in range(N)]
 
 
 def solution(N, M, words):
-    filtered_words = [word for word in words if len(word) >= M]
+    frequency_map = Counter(words)
 
-    frequency_map = Counter(filtered_words)
-
-    sorted_words = sorted(
-        frequency_map.keys(), key=lambda x: (-frequency_map[x], -len(x), x)
+    result = sorted(
+        filter(lambda x: len(x) >= M, frequency_map.keys()),
+        key=lambda x: (-frequency_map[x], -len(x), x),
     )
 
-    for word in sorted_words:
+    for word in result:
         print(word)
 
 

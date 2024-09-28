@@ -8,29 +8,43 @@ graph = [list(map(int, input().split())) for _ in range(N)]
 
 
 def solution(N, M, graph):
-    dp = [[[float("inf")] * 3 for _ in range(M)] for _ in range(N)]
+    direction = [(-1, -1), (-1, 0), (-1, 1)]
 
-    for x in range(M):
-        dp[0][x][0] = graph[0][x]
-        dp[0][x][1] = graph[0][x]
-        dp[0][x][2] = graph[0][x]
+    memo: list[list[list[float, list[bool]]]] = [
+        [[graph[y][x], [float("inf")] * 3] for x in range(M)] for y in range(N)
+    ]
 
-    for y in range(1, N):
+    for y in range(N):
+
         for x in range(M):
-            if x >= 1:
-                dp[y][x][0] = graph[y][x] + min(
-                    dp[y - 1][x - 1][1], dp[y - 1][x - 1][2]
-                )
-            if x < M - 1:
-                dp[y][x][2] = graph[y][x] + min(
-                    dp[y - 1][x + 1][0], dp[y - 1][x + 1][1]
-                )
+            if y == 0:
+                for i in range(3):
+                    # [[5, [5, 5, 5]], [8, [8, 8, 8]], [5, [5, 5, 5]], [1, [1, 1, 1]]]
+                    # [[3 [inf, inf, inf], ...]
+                    memo[y][x][1][i] = memo[y][x][0]
+                continue
 
-            dp[y][x][1] = graph[y][x] + min(dp[y - 1][x][0], dp[y - 1][x][2])
+            for i, (dy, dx) in enumerate(direction):
+                p_y, p_x = y + dy, x + dx
+
+                if p_x < 0 or p_x >= M:
+                    continue
+
+                cur_check_fuel = memo[y][x][1][i]
+                cur_spend_fuel = memo[y][x][0]
+
+                for j, prev_spend_fuel in enumerate(memo[p_y][p_x][1]):
+
+                    if i == j:
+                        continue
+
+                    memo[y][x][1][i] = min(
+                        memo[y][x][1][i], cur_spend_fuel + prev_spend_fuel
+                    )
 
     result = float("inf")
-    for x in range(M):
-        result = min(result, dp[N - 1][x][0], dp[N - 1][x][1], dp[N - 1][x][2])
+    for _, acc in memo[N - 1]:
+        result = min(result, min(acc))
 
     print(result)
 

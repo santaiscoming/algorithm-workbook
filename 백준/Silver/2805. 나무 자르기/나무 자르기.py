@@ -1,4 +1,5 @@
 import sys
+import math
 
 sys.setrecursionlimit(10**8)
 # sys.stdin = open("./input.txt", "r")  # 제거
@@ -7,35 +8,38 @@ input = sys.stdin.readline
 N, M = [int(i) for i in input().split()]
 trees = [int(tree) for tree in input().split()]
 
-# 절단기 최대 높이는 max(trees)
 
-def get_cutting_tree_height(arr, count):
+def solution(N, M, trees):
     result = 0
-    
-    for tree_height in arr:
-      if(tree_height < count):
-        continue
-      result += tree_height - count
+    pl, pr = 0, max(trees)
 
-    return result
+    while True:
+        if pl > pr:
+            break
 
+        pc = (pl + pr) // 2
+        cutted_height = get_cutted_height(trees, pc)
 
-
-def solution(trees, M):
-    left = 1
-    right = max(trees)
-    result = 0
-
-    while left <= right:
-        center = (left + right) // 2
-        cutting_tree_height = get_cutting_tree_height(trees, center)
-
-        if cutting_tree_height >= M:
-            result = center
-            left = center + 1
+        if cutted_height >= M:
+            result = pc
+            pl = pc + 1
         else:
-            right = center - 1
+            pr = pc - 1
+
+    print(result)
+
+
+def get_cutted_height(trees, height):
+    result = 0
+
+    for tree in trees:
+        if tree <= height:
+            continue
+
+        cutted = tree - height
+        result += cutted
 
     return result
 
-print(solution(trees, M))
+
+solution(N, M, trees)

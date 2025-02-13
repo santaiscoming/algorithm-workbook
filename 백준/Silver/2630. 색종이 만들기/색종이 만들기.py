@@ -5,32 +5,52 @@ sys.setrecursionlimit(10**8)
 input = sys.stdin.readline
 
 N = int(input())
-
-matrix = [[int(x) for x in input().split()] for _ in range(N)]
-white = 0
-blue = 0
+mat = [[int(num) for num in input().split()] for _ in range(N)]
 
 
-def solution(paper, x, y, N):
-    global white
-    global blue
+def solution():
+    white, blue = 0, 0
 
-    color = int(paper[x][y])
-    for i in range(x, x + N):
-        for j in range(y, y + N):
-            if color != paper[i][j]:
-                solution(paper, x, y, N // 2)  # 1사분면
-                solution(paper, x, y + N // 2, N // 2)  # 2사분면
-                solution(paper, x + N // 2, y, N // 2)  # 3사분면
-                solution(paper, x + N // 2, y + N // 2, N // 2)  # 4사분면
-                return
-    if color == 1:
-        blue += 1
-    elif color == 0:
-        white += 1
+    def is_paper(i, j, n, flag) -> bool:
+        color = 1 if flag == "blue" else 0
+
+        for y in range(j, j + n):
+            for x in range(i, i + n):
+                if mat[y][x] != color:
+                    return False
+
+        return True
+
+    def recur(x, y, n):
+        nonlocal blue
+        nonlocal white
+
+        if n <= 1:
+            if mat[y][x] == 1:
+                blue += 1
+            else:
+                white += 1
+            return
+
+        if is_paper(x, y, n, "blue"):
+            blue += 1
+            return
+
+        if is_paper(x, y, n, "white"):
+            white += 1
+            return
+
+        half = n // 2
+
+        recur(x, y, half)
+        recur(x, y + half, half)
+        recur(x + half, y, half)
+        recur(x + half, y + half, half)
+
+    recur(0, 0, N)
+
+    print(white)
+    print(blue)
 
 
-solution(matrix, 0, 0, N)
-
-print(white)
-print(blue)
+solution()

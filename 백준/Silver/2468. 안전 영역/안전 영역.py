@@ -1,4 +1,5 @@
 import sys
+from collections import deque
 
 
 sys.setrecursionlimit(10**8)
@@ -12,38 +13,69 @@ mat = [list(map(int, input().split())) for _ in range(N)]
 def solution():
     result = []
     maximum_height = max(map(max, mat))
+    dir = [[1, 0], [-1, 0], [0, 1], [0, -1]]
 
-    def safety_zone(water_height):
-        visited = [[False] * N for _ in range(N)]
-        cnt = 0
-        dir = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+    def bfs(y, x, visited):
+        q = deque()
+        q.append((y, x))
 
-        for y in range(N):
-            for x in range(N):
-                if mat[y][x] < water_height:
-                    visited[y][x] = True
+        while q:
+            (y, x) = q.popleft()
 
-        def dfs(x, y):
-            visited[y][x] = True
-
-            for dx, dy in dir:
-                nx, ny = x + dx, y + dy
-                if nx < 0 or ny < 0 or nx >= N or ny >= N:
+            for dy, dx in dir:
+                ny, nx = y + dy, x + dx
+                if ny < 0 or nx < 0 or ny >= N or nx >= N:
                     continue
 
                 if not visited[ny][nx]:
-                    dfs(nx, ny)
+                    q.append((ny, nx))
+                    visited[ny][nx] = True
+
+    def get_safety_zone_count(water_height):
+        visited = [
+            [True if mat[y][x] < water_height else False for x in range(N)]
+            for y in range(N)
+        ]
+        cnt = 0
 
         for y in range(N):
             for x in range(N):
                 if not visited[y][x]:
-                    dfs(x, y)
+                    bfs(y, x, visited)
                     cnt += 1
 
-        result.append(cnt)
+        return cnt
+
+    # def dfs(x, y, visited):
+    #     visited[y][x] = True
+
+    #     for dx, dy in dir:
+    #         nx, ny = x + dx, y + dy
+    #         if nx < 0 or ny < 0 or nx >= N or ny >= N:
+    #             continue
+
+    #         if not visited[ny][nx]:
+    #             dfs(nx, ny, visited)
+
+    # def get_safety_zone_count(water_height):
+    #     visited = [[False] * N for _ in range(N)]
+    #     cnt = 0
+
+    #     for y in range(N):
+    #         for x in range(N):
+    #             if mat[y][x] < water_height:
+    #                 visited[y][x] = True
+
+    #     for y in range(N):
+    #         for x in range(N):
+    #             if not visited[y][x]:
+    #                 dfs(x, y, visited)
+    #                 cnt += 1
+
+    #     return cnt
 
     for i in range(maximum_height + 1):
-        safety_zone(water_height=i)
+        result.append(get_safety_zone_count(i))
 
     print(max(result))
 

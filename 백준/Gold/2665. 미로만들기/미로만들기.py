@@ -30,10 +30,7 @@ def solution(sx, sy):
                 additional_cost = 1 if mat[ny][nx] == black else 0
                 if cost[ny][nx] > cost[y][x] + additional_cost:
                     cost[ny][nx] = cost[y][x] + additional_cost
-                    if additional_cost == 0:
-                        q.appendleft((nx, ny))
-                    else:
-                        q.append((nx, ny))
+                    q.append((nx, ny))
 
     print(cost[-1][-1])
 

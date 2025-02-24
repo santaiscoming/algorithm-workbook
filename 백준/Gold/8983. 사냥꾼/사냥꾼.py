@@ -22,7 +22,7 @@ def binary_search(arr: List[int], target, left, right):
 
     mid = (left + right) // 2
 
-    if arr[mid] > target:
+    if target < arr[mid]:
         return binary_search(arr, target, left, mid)
     else:
         return binary_search(arr, target, mid + 1, right)
@@ -38,10 +38,16 @@ def solution():
         idx = binary_search(shooters, ax, 0, len(shooters) - 1)
 
         dist = math.inf
-        if idx < len(shooters):
+
+        if idx > 0:
+            dist = min(
+                dist,
+                get_distance(shooters[idx], aPos),
+                get_distance(shooters[idx - 1], aPos),
+            )
+        else:
             dist = min(dist, get_distance(shooters[idx], aPos))
-        if idx - 1 >= 0:
-            dist = min(dist, get_distance(shooters[idx - 1], aPos))
+
         if dist <= L:
             cnt += 1
 

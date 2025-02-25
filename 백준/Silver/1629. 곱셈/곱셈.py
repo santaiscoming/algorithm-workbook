@@ -8,7 +8,26 @@ input = sys.stdin.readline
 A, B, C = map(int, input().split())
 
 
-def solution(A, B, C):
+def devide_solution():
+    def power(a, b):
+
+        if b <= 0:
+            return 1
+
+        if b % 2 == 0:
+            half = power(a, b // 2)
+            return (half * half) % C
+        else:
+            result = a * power(a, b - 1)
+            return result % C
+
+    print(power(A, B))
+
+
+devide_solution()
+
+
+def memo_solution(A, B, C):
     memo = {}
 
     def power(a, b, c):
@@ -33,4 +52,4 @@ def solution(A, B, C):
     print(power(A, B, C))
 
 
-solution(A, B, C)
+# memo_solution(A, B, C)

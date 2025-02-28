@@ -15,32 +15,40 @@ for i in range(H):
 
 def solution():
     # 위부터 시계방향, + 위아래 (x, y, z)
-    dir = [[0, -1, 0], [1, 0, 0], [0, 1, 0], [-1, 0, 0], [0, 0, 1], [0, 0, -1]]
-    q = deque()
+    directions = [[0, -1, 0], [1, 0, 0], [0, 1, 0], [-1, 0, 0], [0, 0, 1], [0, 0, -1]]
     max_days = 0
+    Q = deque()
 
     for z in range(H):
         for y in range(N):
             for x in range(M):
                 if box[z][y][x] == 1:
-                    q.append((x, y, z, 0))
+                    Q.append((x, y, z, 0))
 
-    while q:
-        x, y, z, days = q.popleft()
-        max_days = max(max_days, days)
+    if len(Q) == N * M * H:
+        print(0)
+        return
 
-        for dx, dy, dz in dir:
+    while Q:
+        (x, y, z, days) = Q.popleft()
+
+        for dx, dy, dz in directions:
             nx, ny, nz = x + dx, y + dy, z + dz
 
-            if 0 <= nx < M and 0 <= ny < N and 0 <= nz < H:
-                if box[nz][ny][nx] == 0:
-                    box[nz][ny][nx] = 1
-                    q.append((nx, ny, nz, days + 1))
+            if (
+                (0 <= nx < M)
+                and (0 <= ny < N)
+                and (0 <= nz < H)
+                and box[nz][ny][nx] == 0
+            ):
+                box[nz][ny][nx] = 1
+                Q.append((nx, ny, nz, days + 1))
+                max_days = max(days + 1, max_days)
 
-    for h in range(H):
+    for z in range(H):
         for y in range(N):
             for x in range(M):
-                if box[h][y][x] == 0:
+                if box[z][y][x] == 0:
                     print(-1)
                     return
 

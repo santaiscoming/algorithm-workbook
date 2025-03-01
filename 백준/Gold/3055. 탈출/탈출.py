@@ -17,56 +17,38 @@ def solution():
     w = [(x, y) for x in range(C) for y in range(R) if mat[y][x] == "*"]
     visited = [[False] * C for _ in range(R)]
 
-    w_q = deque()
-    [w_q.append(pos) for pos in w]
-    c_q = deque()
-    c_q.append((s[0], s[1], 0))
+    waterQ = deque()
+    [waterQ.append(pos) for pos in w]
+    posQ = deque()
+    posQ.append((s[0], s[1], 0))
 
-    while True:
-        if not c_q:
-            break
-
-        wl = len(w_q)
-        wLoopCnt = 0
-        while w_q:
-            if wl == wLoopCnt:
-                break
-
-            x, y = w_q.popleft()
-
+    while posQ:
+        for _ in range(len(waterQ)):
+            x, y = waterQ.popleft()
             for dx, dy in direction:
                 nx, ny = x + dx, y + dy
-                if 0 <= nx < C and 0 <= ny < R and mat[ny][nx] == ".":
+
+                if (0 <= nx < C) and (0 <= ny < R) and mat[ny][nx] == ".":
                     mat[ny][nx] = "*"
-                    w_q.append((nx, ny))
+                    waterQ.append((nx, ny))
 
-            wLoopCnt += 1
+        for _ in range(len(posQ)):
+            x, y, time = posQ.popleft()
 
-        cl = len(c_q)
-        cLoopCnt = 0
-        while c_q:
-            if cl == cLoopCnt:
+            if mat[y][x] == "D":
+                min_time = min(min_time, time)
                 break
-
-            x, y, t = c_q.popleft()
-
-            if (x, y) == d:
-                min_time = min(t, min_time)
-                continue
 
             for dx, dy in direction:
                 nx, ny = x + dx, y + dy
                 if (
-                    0 <= nx < C
-                    and 0 <= ny < R
-                    and mat[ny][nx] != "*"
-                    and mat[ny][nx] != "X"
+                    (0 <= nx < C)
+                    and (0 <= ny < R)
+                    and (mat[ny][nx] == "." or mat[ny][nx] == "D")
                     and not visited[ny][nx]
                 ):
-                    c_q.append((nx, ny, t + 1))
+                    posQ.append((nx, ny, time + 1))
                     visited[ny][nx] = True
-
-            cLoopCnt += 1
 
     print("KAKTUS" if min_time == math.inf else min_time)
 

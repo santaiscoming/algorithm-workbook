@@ -1,43 +1,35 @@
 import sys
-from collections import deque
 
-sys.setrecursionlimit(10**8)
-# sys.stdin = open("./input.txt", "r")  # 제거
+sys.setrecursionlimit(10**6)
+# sys.stdin = open("./input.txt", "r")
 input = sys.stdin.readline
 
 N = int(input())
-edge_info = [list(map(int, input().split())) for _ in range(N - 1)]
+edges = [list(map(int, input().split())) for _ in range(N - 1)]
 
 
-def dfs(graph, start, visited, result):
-    if visited[start]:
-        return
-
-    visited[start] = True
-
-    for adj_v in graph[start]:
-        if visited[adj_v]:
-            continue
-        result[adj_v] = start
-        dfs(graph, adj_v, visited, result)
-
-
-def solution(edge_info, N):
-    graph = [[] for _ in range(N + 1)]
+def solution():
     visited = [False] * (N + 1)
-    result = [0] * (N + 1)
+    graph = [[] for _ in range(N + 1)]
+    parent = [None] * (N + 1)
+    for u, v in edges:
+        graph[u].append(v)
+        graph[v].append(u)
 
-    for v1, v2 in edge_info:
-        graph[v1].append(v2)
-        graph[v2].append(v1)
+    def dfs(start):
+        if start >= N + 1:
+            return
 
-    dfs(graph, 1, visited, result)
+        for v in graph[start]:
+            if not visited[v]:
+                visited[v] = True
+                parent[v] = start
+                dfs(v)
 
-    for i, parent in enumerate(result):
-        if i == 0 or i == 1:
-            continue
+    dfs(1)
 
-        print(parent)
+    for i in range(2, len(parent)):
+        print(parent[i])
 
 
-solution(edge_info, N)
+solution()

@@ -5,33 +5,9 @@ sys.setrecursionlimit(10**8)
 input = sys.stdin.readline
 
 N = int(input())
-tops = [int(top) for top in input().split(" ")]
-
+tops = [int(top) for top in input().split(' ')]
 
 def solution(tops, N):
-    stack = []
-    result = [0] * N
-
-    for curr_top_idx in range(N):
-        while stack:
-            prev_top = tops[stack[-1]]
-            curr_top = tops[curr_top_idx]
-
-            if prev_top < curr_top:
-                stack.pop()
-            else:
-                break
-
-        if stack:
-            prev_top_idx = stack[-1]
-            result[curr_top_idx] = prev_top_idx + 1
-
-        stack.append(curr_top_idx)
-
-    return result
-
-
-def solution2(tops, N):
     stack = []
     result = [0] * N
 
@@ -44,7 +20,7 @@ def solution2(tops, N):
 
     return result
 
-
 result = solution(tops, N)
 
-print(" ".join(map(str, result)))
+print(' '.join(map(str,result)))
+

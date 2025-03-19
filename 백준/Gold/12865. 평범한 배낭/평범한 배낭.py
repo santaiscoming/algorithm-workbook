@@ -9,39 +9,12 @@ items = [list(map(int, input().split())) for _ in range(n)]
 
 
 # i 값이 0에서 시작하는것과 n-1 부터 시작하는것의 차이가 무엇을 의미하는지 생각하기
-def __dpSolution():
+def topDown():
     memo = [[-1] * (k + 1) for _ in range(n)]
     s = [size for size, _ in items]
     p = [weight for _, weight in items]
 
     def dfs(i, size):
-        print(i)
-        [print(r) for r in memo]
-        print("")
-
-        if i >= n:
-            return 0
-
-        if memo[i][size] != -1:
-            return memo[i][size]
-
-        if size - s[i] >= 0:
-            memo[i][size] = max(dfs(i + 1, size - s[i]) + p[i], dfs(i + 1, size))
-
-        memo[i][size] = max(memo[i][size], dfs(i + 1, size))
-
-        return memo[i][size]
-
-    print(dfs(0, k))
-
-
-def dpSolution():
-    memo = [[-1] * (k + 1) for _ in range(n)]
-    s = [size for size, _ in items]
-    p = [weight for _, weight in items]
-
-    def dfs(i, size):
-
         if i < 0:
             return 0
 
@@ -59,7 +32,59 @@ def dpSolution():
     print(memo[-1][-1])
 
 
-dpSolution()
+# topDown()
+
+
+def bottomUp():
+    memo = [[0] * (k + 1) for _ in range(n + 1)]
+    profits = [profit for _, profit in items]
+    weights = [weight for weight, _ in items]
+
+    for i in range(1, n + 1):
+        for j in range(k, -1, -1):
+            if j - weights[i - 1] >= 0:
+                memo[i][j] = max(
+                    memo[i - 1][j - weights[i - 1]] + profits[i - 1], memo[i - 1][j]
+                )
+            else:
+                memo[i][j] = max(memo[i - 1][j], 0)
+
+    # 순방향 순회시 2번 사용되는 문제 발생 가능성
+    # for i in range(n):
+    #     for j in range(k + 1):
+    #         if j - weights[i] >= 0:
+    #             memo[i][j] = max(
+    #                 memo[i - 1][j - weights[i]] + profits[i], memo[i - 1][j]
+    #             )
+    #         else:
+    #             memo[i][j] = max(memo[i - 1][j], 0)
+
+    print(memo[-1][-1])
+
+
+bottomUp()
+
+
+def zeroToLenSolution():
+    memo = [[-1] * (k + 1) for _ in range(n)]
+    s = [size for size, _ in items]
+    p = [weight for _, weight in items]
+
+    def dfs(i, size):
+        if i >= n:
+            return 0
+
+        if memo[i][size] != -1:
+            return memo[i][size]
+
+        if size - s[i] >= 0:
+            memo[i][size] = max(dfs(i + 1, size - s[i]) + p[i], dfs(i + 1, size))
+
+        memo[i][size] = max(memo[i][size], dfs(i + 1, size))
+
+        return memo[i][size]
+
+    print(dfs(0, k))
 
 
 def fractionalSolution():

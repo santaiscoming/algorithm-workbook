@@ -18,11 +18,12 @@ def solution():
         for i in range(1, n + 1 - l):
             j = i + l
             for k in range(i, j):
-                cost = dp[i][k] + dp[k + 1][j] + (p[i] * p[k + 1] * p[j + 1])
-                if cost < dp[i][j]:
-                    dp[i][j] = cost
+                dp[i][j] = min(
+                    dp[i][k] + dp[k + 1][j] + (p[i] * p[k + 1] * p[j + 1]), dp[i][j]
+                )
 
     print(dp[1][n])
+
 
 
 solution()

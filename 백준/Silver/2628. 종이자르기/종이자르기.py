@@ -23,20 +23,19 @@ def solution():
     row_cuts.sort()
     col_cuts.sort()
 
-    grid = [[-1 for _ in range(len(col_cuts) - 1)] for _ in range(len(row_cuts) - 1)]
-
     max_area = 0
-    piece_id = 0
 
-    for r in range(len(row_cuts) - 1):
-        for c in range(len(col_cuts) - 1):
+    for i in range(len(row_cuts) - 1):
+        for j in range(len(col_cuts) - 1):
+            top_left = (row_cuts[i], col_cuts[j])
+            bottom_right = (row_cuts[i + 1], col_cuts[j + 1])
 
-            area = (row_cuts[r + 1] - row_cuts[r]) * (col_cuts[c + 1] - col_cuts[c])
-            grid[r][c] = piece_id
-            max_area = max(max_area, area)
-            piece_id += 1
+            lr, lc = top_left
+            rr, rc = bottom_right
 
-    return max_area
+            max_area = max((rr - lr) * (rc - lc), max_area)
+
+    print(max_area)
 
 
-print(solution())
+solution()

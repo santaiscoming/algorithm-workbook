@@ -1,28 +1,40 @@
 import sys
-from functools import reduce
 
-sys.setrecursionlimit(10**8)
-# sys.stdin = open("./input.txt", "r")  # 제거
+# sys.stdin = open("input.txt", "r")
 input = sys.stdin.readline
 
-exp = input().rstrip()
+s = input()
 
 
-def solution(exp):
-    split_exp = exp.split("-")
+def solution():
+    char = ""
+    stack = []
+    for i, c in enumerate(s):
+        if c == "-" or c == "+":
+            if len(char) > 0:
+                stack.append(int(char))
+                char = ""
+            stack.append(c)
+        else:
+            char += c
+            if i == len(s) - 1:
+                stack.append(int(char))
 
-    result = 0
+    result = stack[0]
+    minus_mode = False
 
-    for i, exp in enumerate(split_exp):
-        cur_exp = reduce(lambda acc, cur: acc + cur, list(map(int, exp.split("+"))))
-        # 시작값은 더해주고 시작한다
-        if i == 0:
-            result += cur_exp
-            continue
+    for i in range(1, len(stack), 2):
+        if i + 1 < len(stack):
+            op = stack[i]
+            num = stack[i + 1]
 
-        result -= cur_exp
+            if op == "-" or minus_mode:
+                minus_mode = True
+                result -= num
+            else:
+                result += num
 
     print(result)
 
 
-solution(exp)
+solution()

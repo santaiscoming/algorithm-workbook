@@ -15,17 +15,14 @@ def solution():
         appendable_count = maximum_stack_count - len(stack)
         rest = n - i
 
-        if not stack:
-            stack.append(v)
-            continue
-
-        if rest < appendable_count:
-            stack.append(v)
-            continue
-
-        while stack and v > stack[-1] and maximum_stack_count - len(stack) < rest:
+        while (
+            stack
+            and v > stack[-1]
+            and maximum_stack_count - len(stack) < rest
+            and appendable_count < rest
+        ):
             stack.pop()
-
+            
         if maximum_stack_count - len(stack) > 0:
             stack.append(v)
 

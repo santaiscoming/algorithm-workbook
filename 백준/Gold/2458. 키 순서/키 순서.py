@@ -8,6 +8,39 @@ n, m = map(int, input().split())
 edges = [list(map(int, input().split())) for _ in range(m)]
 
 
+def dfs_solution():
+    graph = [[] for _ in range(n + 1)]
+    reversed_graph = [[] for _ in range(n + 1)]
+    for s, v in edges:
+        graph[s].append(v)
+        reversed_graph[v].append(s)
+
+    node_info = [0] * (n + 1)
+
+    def dfs(s, cur, graph, visited):
+        visited[cur] = True
+        node_info[s] += 1
+
+        for v in graph[cur]:
+
+            if not visited[v]:
+                dfs(s, v, graph, visited)
+
+    for i in range(1, n + 1):
+        dfs(i, i, graph, [False] * (n + 1))
+        dfs(i, i, reversed_graph, [False] * (n + 1))
+
+    result = 0
+    for i in range(1, n + 1):
+        if node_info[i] == n + 1:
+            result += 1
+
+    print(result)
+
+
+dfs_solution()
+
+
 def solution():
     mat = [[math.inf] * (n) for _ in range(n)]
     for i in range(n):
@@ -36,4 +69,4 @@ def solution():
     print(result)
 
 
-solution()
+# solution()

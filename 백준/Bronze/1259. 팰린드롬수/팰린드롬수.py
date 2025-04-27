@@ -10,19 +10,13 @@ cases = [list(map(int, n)) for n in iter(lambda: input().rstrip(), "0")]
 
 def solution():
     def isPal(s) -> Literal["yes", "no"]:
-        left, right = 0, len(s) - 1
+        return "yes" if s == s[::-1] else "no"
 
-        while left <= right:
-            if s[left] != s[right]:
-                return "no"
-
-            left += 1
-            right -= 1
-
-        return "yes"
+    def isPal2(s) -> Literal["yes", "no"]:
+        return "yes" if all(a == b for a, b in zip(s, s[::-1])) else "no"
 
     for s in cases:
-        print(isPal(s))
+        print(isPal2(s))
 
 
 solution()

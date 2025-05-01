@@ -10,45 +10,37 @@ mat = [list(input().rstrip()) for _ in range(n)]
 
 
 def solution():
-    def paint(x, y, mat):
-        startBlackCount = 0
-        startWhiteCount = 0
+    WHITE = "W"
+    BLACK = "B"
 
+    def flipColor(curr):
+        return WHITE if curr == BLACK else BLACK
+
+    def repaintCount(x, y, mat, startColor):
+        count = 0
+
+        currColor = startColor
         for dy in range(8):
-            isBlackTurn = True if dy % 2 == 1 else False
-
             for dx in range(8):
                 nx, ny = x + dx, y + dy
+                if currColor != mat[ny][nx]:
+                    count += 1
 
-                if (isBlackTurn and mat[ny][nx] == "W") or (
-                    not isBlackTurn and mat[ny][nx] == "B"
-                ):
-                    startBlackCount += 1
+                currColor = flipColor(currColor)
+            currColor = flipColor(currColor)
 
-                isBlackTurn = not isBlackTurn
-
-        for dy in range(8):
-            isWhiteTurn = True if dy % 2 == 1 else False
-
-            for dx in range(8):
-                nx, ny = x + dx, y + dy
-
-                if (isWhiteTurn and mat[ny][nx] == "B") or (
-                    not isWhiteTurn and mat[ny][nx] == "W"
-                ):
-                    startWhiteCount += 1
-
-                isWhiteTurn = not isWhiteTurn
-
-        return min(startBlackCount, startWhiteCount)
+        return count
 
     result = math.inf
 
     for y in range(n):
         for x in range(m):
             if x + 8 <= m and y + 8 <= n:
-                cnt = paint(x, y, mat)
-                result = min(result, cnt)
+                result = min(
+                    result,
+                    repaintCount(x, y, mat, WHITE),
+                    repaintCount(x, y, mat, BLACK),
+                )
 
     print(result)
 

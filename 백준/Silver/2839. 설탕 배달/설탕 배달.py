@@ -1,4 +1,5 @@
 import sys
+import math
 
 
 # sys.stdin = open("input.txt", "r")
@@ -8,16 +9,13 @@ n = int(input())
 
 
 def solution():
-    result = -1
+    dp = [math.inf] * (n + 1)
+    dp[0] = 0
 
-    for five in range(0, n + 1, 5):
-        fiveCount = five // 5
-        rest = n - five
+    for i in range(3, n + 1):
+        dp[i] = min(dp[i], dp[i - 3] + 1, dp[i - 5] + 1)
 
-        if rest % 3 == 0:
-            result = fiveCount + rest // 3
-
-    print(result)
+    print(dp[-1]) if dp[-1] != math.inf else print(-1)
 
 
 solution()

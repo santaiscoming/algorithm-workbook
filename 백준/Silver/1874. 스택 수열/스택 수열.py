@@ -7,6 +7,30 @@ n = int(input())
 arr = [int(input()) for _ in range(n)]
 
 
+def solution2():
+    stack = []
+    result = []
+    num = 1
+
+    for target in arr:
+        while num <= target:
+            result.append("+")
+            stack.append(num)
+            num += 1
+
+        if stack[-1] == target:
+            stack.pop()
+            result.append("-")
+        else:
+            print("NO")
+            return
+
+    print("\n".join(result))
+
+
+solution2()
+
+
 def solution():
     result = []
     stack = []
@@ -39,4 +63,4 @@ def solution():
     [print(v) for v in result]
 
 
-solution()
+# solution()

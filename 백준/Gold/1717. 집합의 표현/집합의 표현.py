@@ -29,12 +29,24 @@ def solution():
         if x.rank == y.rank:
             y.rank += 1
 
-    sets = [Node(i) for i in range(n + 1)]
+    def makeSet(key):
+        return Node(key)
+
+    sets = {}
 
     for a, b, c in arr:
         if a == 0:
+            if b not in sets:
+                sets[b] = makeSet(b)
+            if c not in sets:
+                sets[c] = makeSet(c)
             union(sets[b], sets[c])
         else:
+            if b not in sets:
+                sets[b] = makeSet(b)
+            if c not in sets:
+                sets[c] = makeSet(c)
+
             print("YES" if find(sets[b]) == find(sets[c]) else "NO")
 
 

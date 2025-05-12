@@ -12,8 +12,10 @@ def solution2():
     rank = [0 for _ in range(n + 1)]
 
     def find(x: int):
+        prev = x
         while x != parent[x]:
             x = parent[x]
+            parent[prev] = parent[x]
 
         return x
 

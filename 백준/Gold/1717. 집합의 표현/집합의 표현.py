@@ -7,47 +7,73 @@ n, m = map(int, input().split())
 arr = [list(map(int, input().split())) for _ in range(m)]
 
 
+def solution2():
+    parent = list(range(n + 1))
+    rank = [0 for _ in range(n + 1)]
+
+    def find(x: int):
+        while x != parent[x]:
+            x = parent[x]
+
+        return x
+
+    def union(x, y):
+        v, w = find(x), find(y)
+        vr, vw = rank[v], rank[w]
+
+        if vr > vw:
+            v, w = w, v
+
+        parent[v] = w
+
+        if vr == vw:
+            rank[w] += 1
+
+    for op, a, b in arr:
+        if op == 0:
+            union(a, b)
+        else:
+            print("YES") if find(a) == find(b) else print("NO")
+
+
+solution2()
+
+
 def solution():
     class Node:
-        def __init__(self, key):
-            self.key = key
+        def __init__(self, key: int):
             self.parent = self
+            self.key = key
             self.rank = 0
 
     def find(x: Node):
-        if x != x.parent:
-            x.parent = find(x.parent)
-        return x.parent
+        while x != x.parent:
+            x = x.parent
+
+        return x
 
     def union(x: Node, y: Node):
-        x = find(x)
-        y = find(y)
-        if x.rank > y.rank:
-            x, y = y, x
-        y.parent = x
+        v, w = find(x), find(y)
 
-        if x.rank == y.rank:
-            y.rank += 1
+        if v.rank > w.rank:
+            v, w = w, v
+        v.parent = w
 
-    def makeSet(key):
-        return Node(key)
+        if v.rank == w.rank:
+            w.rank += 1
 
     sets = {}
 
-    for a, b, c in arr:
-        if a == 0:
-            if b not in sets:
-                sets[b] = makeSet(b)
-            if c not in sets:
-                sets[c] = makeSet(c)
-            union(sets[b], sets[c])
+    for op, a, b in arr:
+        if a not in sets:
+            sets[a] = Node(a)
+        if b not in sets:
+            sets[b] = Node(b)
+
+        if op == 0:
+            union(sets[a], sets[b])
         else:
-            if b not in sets:
-                sets[b] = makeSet(b)
-            if c not in sets:
-                sets[c] = makeSet(c)
-
-            print("YES" if find(sets[b]) == find(sets[c]) else "NO")
+            print("NO") if find(sets[a]) != find(sets[b]) else print("YES")
 
 
-solution()
+# solution()

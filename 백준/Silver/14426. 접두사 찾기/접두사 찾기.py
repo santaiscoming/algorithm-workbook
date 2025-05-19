@@ -38,4 +38,26 @@ def solution():
     print(result)
 
 
-solution()
+# solution()
+
+from bisect import bisect_left
+
+
+def solution2():
+    S = sorted(stringSets)
+    bound = len(S)
+    result = 0
+
+    for word in searchWords:
+        idx = bisect_left(S, word)
+
+        if idx >= bound:
+            continue
+
+        if S[idx].startswith(word):
+            result += 1
+
+    print(result)
+
+
+solution2()

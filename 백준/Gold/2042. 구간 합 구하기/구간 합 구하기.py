@@ -52,7 +52,7 @@ def solution():
             lResult = self.ide
             rResult = self.ide
 
-            while l <= r and r >= 0:
+            while l <= r:
                 if l & 1:
                     lResult = self.op(lResult, self.tree[l])
                     l += 1

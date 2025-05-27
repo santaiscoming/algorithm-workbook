@@ -15,15 +15,14 @@ inputs = list(
 
 
 def solution():
-    MAX_RANGE = 103
+    MAX_RANGE = 21
     dp = [[[0] * MAX_RANGE for _ in range(MAX_RANGE)] for _ in range(MAX_RANGE)]
 
     def w(a, b, c) -> str:
-        if dp[a][b][c]:
+        if all(0 <= num <= 20 for num in [a, b, c]) and dp[a][b][c]:
             return dp[a][b][c]
 
         result = 0
-
         if any(num <= 0 for num in [a, b, c]):
             result = 1
         elif any(num > 20 for num in [a, b, c]):
@@ -38,12 +37,13 @@ def solution():
                 - w(a - 1, b - 1, c - 1)
             )
 
-        dp[a][b][c] = result
+        if all(0 <= num <= 20 for num in [a, b, c]):
+            dp[a][b][c] = result
 
         return result
 
     for a, b, c in inputs:
-        print(f"w({a}, {b}, {c}) = {w(a, b,c)}")
+        print(f"w({a}, {b}, {c}) = {w(a, b, c)}")
 
 
 solution()

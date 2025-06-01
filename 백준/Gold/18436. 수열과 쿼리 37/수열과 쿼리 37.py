@@ -11,9 +11,9 @@ queries = [list(map(int, input().split())) for _ in range(m)]
 
 def solution():
     class SegTree:
-        def __init__(self, data, isOddEvenFunc) -> None:
+        def __init__(self, data, conditionalOp) -> None:
             self.data = data
-            self.isOddEvenFunc = isOddEvenFunc
+            self.conditionalOp = conditionalOp
             self.k = self._getLeafSize()
             self.tree = [0] * (self.k << 1)
             self._init()
@@ -26,14 +26,13 @@ def solution():
             return i
 
         def _init(self):
-            for i in range(len(self.data)):
-                j = i + self.k
-                self.tree[j] = 1 if self.isOddEvenFunc(self.data[i]) else 0
+            start = self.k
+            newData = [1 if self.conditionalOp(i) else 0 for i in self.data]
+            self.tree[start : start + len(self.data)] = newData
 
-            i = self.k
-            while i:
-                i -= 1
+            for i in range(self.k - 1, 0, -1):
                 self.tree[i] = self.tree[i << 1] + self.tree[i << 1 | 1]
+            i = self.k
 
         def query(self, start, end):
             l, r = start + self.k, end + self.k
@@ -55,14 +54,14 @@ def solution():
 
         def update(self, i, v):
             i += self.k
-            self.tree[i] = 1 if self.isOddEvenFunc(v) else 0
+            self.tree[i] = 1 if self.conditionalOp(v) else 0
 
             while i:
                 i >>= 1
                 self.tree[i] = self.tree[i << 1] + self.tree[i << 1 | 1]
 
-    evenSegTree = SegTree(nums, lambda x: True if x % 2 == 0 else False)
-    oddSegTree = SegTree(nums, lambda x: True if x % 2 == 1 else False)
+    evenSegTree = SegTree(nums, lambda x: x % 2 == 0)
+    oddSegTree = SegTree(nums, lambda x: x % 2 == 1)
 
     for op, l, r in queries:
         if op == 1:

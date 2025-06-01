@@ -1,5 +1,6 @@
 import sys
 from collections import defaultdict
+from bisect import bisect_left, bisect_right
 
 # sys.stdin = open("input.txt", "r")  # ❌
 input = sys.stdin.readline
@@ -15,13 +16,9 @@ def solution():
         counter[c].append(i)
 
     for c, start, end in qs:
-        result = 0
+        left, right = bisect_left(counter[c], start), bisect_right(counter[c], end)
 
-        for pos in counter[c]:
-            if start <= pos <= end:
-                result += 1
-
-        print(result)
+        print(right - left)
 
 
 solution()

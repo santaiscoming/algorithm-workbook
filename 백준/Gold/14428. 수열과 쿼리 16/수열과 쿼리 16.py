@@ -21,11 +21,7 @@ def solution():
             self._build()
 
         def _getLeafSize(self):
-            i = 1
-            while i < len(self.data):
-                i <<= 1
-
-            return i
+            return 1 << next(i for i in range(64) if 1 << i > len(self.data))
 
         def _build(self):
             start = self.k
@@ -69,18 +65,14 @@ def solution():
             return self.op(lr, rr, self.data)
 
     def op(i, j, data):
-        if any(idx >= len(data) for idx in [i, j]):
-            return min(i, j, math.inf)
-
-        v1 = data[i]
-        v2 = data[j]
-
-        if v1 == v2:
-            return min(i, j)
-        elif v1 > v2:
+        if i >= len(data):
             return j
-        else:
+        if j >= len(data):
             return i
+
+        if data[i] < data[j] or (data[i] == data[j] and i < j):
+            return i
+        return j
 
     segTree = SegTree(arr, op, math.inf)
 

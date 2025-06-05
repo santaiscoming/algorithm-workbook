@@ -1,7 +1,7 @@
 import sys
 import math
 
-# sys.stdin = open("./input.txt", "r")  # 제거
+# sys.stdin = open("input.txt", "r")  # ❌
 input = sys.stdin.readline
 
 n = int(input())
@@ -10,45 +10,42 @@ ops = list(map(int, input().split()))
 
 
 def solution():
-    minSum = math.inf
-    maxSum = -math.inf
+    min_value = math.inf
+    max_value = -math.inf
 
-    def calc(op, acc, next):
-        match op:
-            case 0:  # +
-                return acc + next
-            case 1:  # -
-                return acc - next
-            case 2:  # *
-                return acc * next
-            case 3:  # //
+    def op(op_i, v_1, v_2):
+        match op_i:
+            case 0:
+                return v_1 + v_2
+            case 1:
+                return v_1 - v_2
+            case 2:
+                return v_1 * v_2
+            case 3:
+                if v_1 < 0 and v_2 >= 0:
+                    return -(abs(v_1) // v_2)
 
-                if acc < 0:
-                    return -(abs(acc) // next)
+                return v_1 // v_2
 
-                return acc // next
+    def dfs(picked, acc):
+        nonlocal min_value
+        nonlocal max_value
 
-    def dfs(depth, acc):
-        nonlocal minSum
-        nonlocal maxSum
-
-        if not any(ops):
-            # if depth >= sum(ops):
-            minSum = min(minSum, acc)
-            maxSum = max(maxSum, acc)
+        if picked == n - 1:
+            min_value = min(acc, min_value)
+            max_value = max(acc, max_value)
             return
 
         for i in range(4):
             if ops[i] != 0:
                 ops[i] -= 1
-                next = nums[depth + 1]
-                dfs(depth + 1, calc(i, acc, next))
+                dfs(picked + 1, op(i, acc, nums[picked + 1]))
                 ops[i] += 1
 
     dfs(0, nums[0])
 
-    print(maxSum)
-    print(minSum)
+    print(max_value)
+    print(min_value)
 
 
 solution()

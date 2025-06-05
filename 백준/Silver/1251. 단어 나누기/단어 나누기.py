@@ -11,17 +11,12 @@ def solution():
 
     words = []
     for i in range(1, n):
-        first = s[:i]
-        for j in range(1, n):
+        for j in range(1, n - i):
+            first = s[:i]
             second = s[i : i + j]
-            if len(second) < 1:
-                continue
-            for k in range(1, n):
-                third = s[i + j : max(i + j + k, n)]
-                if len(third) < 1:
-                    continue
+            third = s[i + j : n + 1]
 
-                words.append(first[::-1] + second[::-1] + third[::-1])
+            words.append(first[::-1] + second[::-1] + third[::-1])
 
     print(sorted(words)[0])
 

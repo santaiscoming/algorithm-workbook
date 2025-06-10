@@ -9,9 +9,9 @@ mat = [list(map(int, input().split())) for _ in range(n)]
 
 def solution2():
     def dfs(i, aTeam, bTeam, aScore, bScore):
+        nonlocal result
+        
         if i == n:
-            nonlocal result
-
             result = min(result, abs(aScore - bScore))
             return
 
@@ -31,7 +31,7 @@ def solution2():
         )
 
     result = float("inf")
-    dfs(0, [], [], 0, 0)
+    dfs(1, [0], [], 0, 0)
     print(result)
 
 

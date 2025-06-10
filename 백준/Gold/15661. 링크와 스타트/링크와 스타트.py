@@ -7,6 +7,29 @@ n = int(input())
 mat = [list(map(int, input().split())) for _ in range(n)]
 
 
+def solution2():
+    def dfs(i, aTeam, bTeam, aScore, bScore):
+        if i == n:
+            nonlocal result
+            result = min(result, abs(aScore - bScore))
+            return
+
+        newAScore = sum(mat[i][a] + mat[a][i] for a in aTeam)
+        newBScore = sum(mat[i][b] + mat[b][i] for b in bTeam)
+
+        dfs(i + 1, aTeam + [i], bTeam, aScore + newAScore, bScore)
+        dfs(i + 1, aTeam, bTeam + [i], aScore, bScore + newBScore)
+
+    result = float("inf")
+    dfs(0, [], [], 0, 0)
+    print(result)
+
+
+solution2()
+
+
+# 비트마스킹을 사용한다면 1 << (n - 1) - 1 로 범위를 잡아야함
+# -> n번 밀고 -1해야 n개의 비트가 생김
 def solution():
     INF = float("inf")
     pre_mat = [[mat[y][x] + mat[x][y] for x in range(n)] for y in range(n)]
@@ -40,8 +63,12 @@ def solution():
                 dfs(picked + [i], visited, i)
                 visited[i] = False
 
-    dfs([0], [False] * n, 1)
+    dfs(
+        [0],  # 대칭성 제거를 위함
+        [False] * n,
+        1,
+    )
     print(result)
 
 
-solution()
+# solution()

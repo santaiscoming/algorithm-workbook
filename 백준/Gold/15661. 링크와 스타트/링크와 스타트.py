@@ -11,14 +11,24 @@ def solution2():
     def dfs(i, aTeam, bTeam, aScore, bScore):
         if i == n:
             nonlocal result
+
             result = min(result, abs(aScore - bScore))
             return
 
-        newAScore = sum(mat[i][a] + mat[a][i] for a in aTeam)
-        newBScore = sum(mat[i][b] + mat[b][i] for b in bTeam)
-
-        dfs(i + 1, aTeam + [i], bTeam, aScore + newAScore, bScore)
-        dfs(i + 1, aTeam, bTeam + [i], aScore, bScore + newBScore)
+        dfs(
+            i + 1,
+            aTeam + [i],
+            bTeam,
+            aScore + sum(mat[i][a] + mat[a][i] for a in aTeam),
+            bScore,
+        )
+        dfs(
+            i + 1,
+            aTeam,
+            bTeam + [i],
+            aScore,
+            bScore + sum(mat[i][b] + mat[b][i] for b in bTeam),
+        )
 
     result = float("inf")
     dfs(0, [], [], 0, 0)

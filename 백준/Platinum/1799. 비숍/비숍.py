@@ -7,7 +7,50 @@ n = int(input())
 mat = [list(map(int, input().split())) for _ in range(n)]
 
 
-def solution():
+def solution3():
+    # 대각선 사용 여부 체크 (우상향 대각선)
+    diag_used = [False] * (2 * n)
+
+    def backtrack_diagonal(diagonal_idx):
+        if diagonal_idx >= 2 * n - 1:
+            return 0
+
+        max_count = 0
+
+        # 현재 대각선에서 시작 좌표 계산
+        if diagonal_idx < n:
+            start_y, start_x = diagonal_idx, 0
+        else:
+            start_y, start_x = n - 1, diagonal_idx - (n - 1)
+
+        y, x = start_y, start_x
+
+        # 현재 대각선 순회
+        while y >= 0 and x < n:
+            if mat[y][x] == 1 and not diag_used[x - y + n]:
+                # 비숍 배치
+                diag_used[x - y + n] = True
+                count = backtrack_diagonal(diagonal_idx + 2) + 1
+                max_count = max(max_count, count)
+                diag_used[x - y + n] = False
+
+            x += 1
+            y -= 1
+
+        # 현재 대각선에서 비숍을 놓지 않는 경우
+        max_count = max(max_count, backtrack_diagonal(diagonal_idx + 2))
+
+        return max_count
+
+    # 짝수 대각선 + 홀수 대각선
+    result = backtrack_diagonal(0) + backtrack_diagonal(1)
+    print(result)
+
+
+solution3()
+
+
+def solution1():
     # 체스판을 흑백으로 분할
     black_cells = []
     white_cells = []
@@ -55,7 +98,7 @@ def solution():
     print(black_max + white_max)
 
 
-solution()
+# solution1()
 
 
 def solution2():

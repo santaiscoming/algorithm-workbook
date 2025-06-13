@@ -15,18 +15,16 @@ def solution():
 
 
 def solution2():
-    def dfs(numStr, picked, start, visited):
+    def dfs(numStr, picked, start):
         if picked == m:
             print(*list(numStr))
             return
 
         for i in range(start, n + 1):
-            if not visited[i]:
-                visited[i] = True
-                dfs(numStr + str(i), picked + 1, i + 1, visited)
-                visited[i] = False
 
-    dfs("", 0, 1, [False] * (n + 1))
+            dfs(numStr + str(i), picked + 1, i + 1)
+
+    dfs("", 0, 1)
     print("")
 
 

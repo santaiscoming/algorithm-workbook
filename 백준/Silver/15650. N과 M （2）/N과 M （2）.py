@@ -11,7 +11,7 @@ def solution():
     [print(*combi) for combi in combinations(range(1, n + 1), m)]
 
 
-solution()
+# solution()
 
 
 def solution2():
@@ -30,4 +30,4 @@ def solution2():
     print("")
 
 
-# solution2()
+solution2()

@@ -7,6 +7,25 @@ n, m = map(int, input().split())
 nums = list(map(int, input().split()))
 
 
+def solution2():
+    nums.sort(reverse=True)
+
+    stack = [[]]
+
+    while stack:
+        curr = stack.pop()
+
+        if len(curr) == m:
+            print(*curr)
+            continue
+
+        for num in nums:
+            stack.append([*curr, num])
+
+
+solution2()
+
+
 def solution():
     nums.sort()
 
@@ -21,4 +40,4 @@ def solution():
     dfs([])
 
 
-solution()
+# solution()

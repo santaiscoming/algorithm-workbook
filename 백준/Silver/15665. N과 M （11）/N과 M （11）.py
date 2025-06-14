@@ -13,13 +13,12 @@ def solution3():
     nums.sort(reverse=True)
 
     stack = [[]]
-    prev = -1
+    
     while stack:
         curr = stack.pop()
 
         if len(curr) == m:
             print(*curr)
-            prev = curr[-1]
             continue
 
         prev = -1

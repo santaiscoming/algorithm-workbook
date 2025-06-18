@@ -10,29 +10,25 @@ costs = [list(map(int, input().split())) for _ in range(n)]
 
 
 def solution():
-    minCost = math.inf
-    dp = [math.inf] * (c + 1)
+    memo = {}
 
-    def dfs(cost, profit, start):
-        nonlocal minCost
+    def recur(profit):
+        if profit in memo:
+            return memo[profit]
 
-        if profit >= c:
-            minCost = min(minCost, cost)
-            return
+        if profit <= 0:
+            return 0
 
-        if dp[profit] <= cost:
-            return
+        minCost = math.inf
 
-        dp[profit] = cost
+        for cost, curProfit in costs:
+            minCost = min(minCost, cost + recur(profit - curProfit))
 
-        for i in range(start, n):
-            curCost, curProfit = costs[i]
+        memo[profit] = minCost
 
-            dfs(cost + curCost, profit + curProfit, i)
-            dfs(cost, profit, i + 1)
+        return minCost
 
-    dfs(0, 0, 0)
-    print(minCost)
+    print(recur(c))
 
 
 solution()

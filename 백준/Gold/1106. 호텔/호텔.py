@@ -1,34 +1,25 @@
 import sys
 import math
 
-sys.setrecursionlimit(10**6)
 # sys.stdin = open("input.txt", "r")  # ❌
 input = sys.stdin.readline
 
 c, n = map(int, input().split())
-costs = [list(map(int, input().split())) for _ in range(n)]
+info = [list(map(int, input().split())) for _ in range(n)]
 
 
 def solution():
-    memo = {}
+    dpSize = c + max(profit for _, profit in info) + 1
+    dp = [math.inf] * dpSize
+    dp[0] = 0
 
-    def recur(profit):
-        if profit in memo:
-            return memo[profit]
+    for i in range(dpSize):
+        for cost, profit in info:
+            if i >= profit:
+                dp[i] = min(dp[i], dp[i - profit] + cost)
 
-        if profit <= 0:
-            return 0
-
-        minCost = math.inf
-
-        for cost, curProfit in costs:
-            minCost = min(minCost, cost + recur(profit - curProfit))
-
-        memo[profit] = minCost
-
-        return minCost
-
-    print(recur(c))
+    print(min(dp[c:]))
 
 
 solution()
+

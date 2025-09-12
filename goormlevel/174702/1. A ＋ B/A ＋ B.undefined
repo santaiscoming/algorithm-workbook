@@ -1,0 +1,14 @@
+// Run by Node.js
+const readline = require('readline');
+
+(async () => {
+	let rl = readline.createInterface({ input: process.stdin });
+	
+	for await (const line of rl) {
+		const arr = line.split(' ').map((v) => Number(v))
+		console.log(arr.reduce((a , b) => a + b, 0))
+		rl.close();
+	}
+	
+	process.exit();
+})();

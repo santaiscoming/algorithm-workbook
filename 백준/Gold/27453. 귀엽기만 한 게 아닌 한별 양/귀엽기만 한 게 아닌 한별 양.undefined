@@ -1,0 +1,102 @@
+use std::collections::VecDeque;
+use std::io::{self, BufRead};
+
+fn main() {
+    let stdin = io::stdin();
+    let mut iterator = stdin.lock().lines();
+
+    let first_line = iterator.next().unwrap().unwrap();
+    let parts: Vec<usize> = first_line
+        .split_whitespace()
+        .map(|x| x.parse().unwrap())
+        .collect();
+    let (n, m, k) = (parts[0], parts[1], parts[2] as i32);
+
+    let mut village = Vec::with_capacity(n);
+    let mut start = None;
+    let mut dest_exists = false;
+
+    for y in 0..n {
+        let line = iterator.next().unwrap().unwrap();
+        let row: Vec<char> = line.chars().collect();
+        for (x, &c) in row.iter().enumerate() {
+            if c == 'S' {
+                start = Some((x, y));
+            } else if c == 'H' {
+                dest_exists = true;
+            }
+        }
+        village.push(row);
+    }
+
+    if start.is_none() || !dest_exists {
+        println!("-1");
+        return;
+    }
+
+    let (sx, sy) = start.unwrap();
+
+    let dx = [1, 0, -1, 0];
+    let dy = [0, 1, 0, -1];
+
+    let mut visited = vec![vec![vec![false; 4]; m]; n];
+
+    let mut q = VecDeque::new();
+    q.push_back((sx, sy, None::<(usize, usize)>, 0));
+
+    let get_val = |x: usize, y: usize, village: &Vec<Vec<char>>| -> i32 {
+        let c = village[y][x];
+        if c.is_ascii_digit() {
+            c as i32 - '0' as i32
+        } else {
+            0
+        }
+    };
+
+    while let Some((x, y, p_opt, cost)) = q.pop_front() {
+        for i in 0..4 {
+            let nx_i = x as i32 + dx[i];
+            let ny_i = y as i32 + dy[i];
+
+            if nx_i < 0 || nx_i >= m as i32 || ny_i < 0 || ny_i >= n as i32 {
+                continue;
+            }
+
+            let nx = nx_i as usize;
+            let ny = ny_i as usize;
+
+            if village[ny][nx] == 'X' || village[ny][nx] == 'S' {
+                continue;
+            }
+            if let Some((px, py)) = p_opt {
+                if nx == px && ny == py {
+                    continue;
+                }
+            }
+
+            if village[ny][nx] == 'H' {
+                println!("{}", cost + 1);
+                return;
+            }
+
+            let prev_unlucky = if let Some((px, py)) = p_opt {
+                get_val(px, py, &village)
+            } else {
+                0
+            };
+            let curr_unlucky = get_val(x, y, &village);
+            let next_unlucky = get_val(nx, ny, &village);
+
+            if prev_unlucky + curr_unlucky + next_unlucky > k {
+                continue;
+            }
+
+            if !visited[ny][nx][i] {
+                visited[ny][nx][i] = true;
+                q.push_back((nx, ny, Some((x, y)), cost + 1));
+            }
+        }
+    }
+
+    println!("-1");
+}
